@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | Secure System</title>
+  <meta name="description" content="Protected member dashboard page.">
+  <link rel="stylesheet" href="style.css">
+  <script src="auth.js"></script>
+  <script>
+    // Critical: Inline blocking script to redirect unauthorized access instantly,
+    // avoiding layout flash of protected data.
+    const activeSession = checkSession(true);
+    if (!activeSession) {
+      document.documentElement.style.display = 'none';
+    }
+  </script>
+</head>
+<body>
+
+  <div class="dashboard-container">
+    
+    <!-- Header -->
+    <header class="dashboard-header">
+      <div>
+        <h1>Dashboard</h1>
+        <p style="color: var(--text-secondary); margin-top: 4px;">Welcome back to your secure space</p>
+      </div>
+
+      <div class="user-badge">
+        <div class="user-avatar" id="avatar-icon">-</div>
+        <span class="user-email" id="display-username">Loading...</span>
+        <button class="btn btn-secondary" id="logout-btn" style="padding: 8px 16px; font-size: 13.5px; border-radius: 20px; width: auto; margin-left: 8px;">
+          Log Out
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main class="dashboard-content">
+      
+      <!-- Protected Content Card -->
+      <section class="dashboard-card">
+        <h2>Secure Environment</h2>
+        <p>This panel contains highly confidential user settings and details that are only accessible to authenticated users. Your session data is safely isolated in <code>sessionStorage</code> and password hashes are protected using browser-level cryptographic standards.</p>
+        
+        <div id="alert-container" class="alert hidden" style="margin-top: 24px;"></div>
+
+        <div class="action-btn-group">
+          <button class="btn btn-primary" id="btn-sec-action">
+            Verify System State
+          </button>
+          <button class="btn btn-secondary" id="btn-show-token">
+            Reveal Secure Key
+          </button>
+        </div>
+      </section>
+
+      <!-- Session metadata panel -->
+      <section class="dashboard-card">
+        <h2>Session Details</h2>
+        <p>Current authentication metadata:</p>
+        
+        <ul class="session-info-list">
+          <li class="session-info-item">
+            <span class="session-info-label">Active User</span>
+            <span class="session-info-value" id="session-user">-</span>
+          </li>
+          <li class="session-info-item">
+            <span class="session-info-label">Authentication Method</span>
+            <span class="session-info-value" style="color: var(--color-success);">SHA-256 (Local)</span>
+          </li>
+          <li class="session-info-item">
+            <span class="session-info-label">Logged In At</span>
+            <span class="session-info-value" id="session-time">-</span>
+          </li>
+          <li class="session-info-item">
+            <span class="session-info-label">Session Status</span>
+            <span class="session-info-value" style="color: var(--color-success); font-weight: bold;">Protected</span>
+          </li>
+        </ul>
+      </section>
+
+    </main>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // If code reached here, activeSession is valid and loaded
+      if (!activeSession) return;
+
+      const displayUsername = document.getElementById('display-username');
+      const sessionUser = document.getElementById('session-user');
+      const sessionTime = document.getElementById('session-time');
+      const avatarIcon = document.getElementById('avatar-icon');
+      const logoutBtn = document.getElementById('logout-btn');
+      
+      const alertContainer = document.getElementById('alert-container');
+      const verifyBtn = document.getElementById('btn-sec-action');
+      const revealBtn = document.getElementById('btn-show-token');
+
+      // 1. Setup user display details
+      const username = activeSession.username;
+      displayUsername.textContent = username;
+      sessionUser.textContent = username;
+      
+      // Avatar first letter
+      avatarIcon.textContent = username.charAt(0);
+
+      // Parse login time
+      const loginDate = new Date(activeSession.loginTime);
+      sessionTime.textContent = loginDate.toLocaleTimeString() + ' ' + loginDate.toLocaleDateString();
+
+      // 2. Setup logout listener
+      logoutBtn.addEventListener('click', () => {
+        logout();
+      });
+
+      // 3. Setup interactive dummy buttons to make the app feel alive and premium
+      verifyBtn.addEventListener('click', () => {
+        hideAlert(alertContainer);
+        showAlert(alertContainer, 'System integrity check passed! Secure sandbox fully functional.', 'success');
+      });
+
+      let tokenRevealed = false;
+      revealBtn.addEventListener('click', () => {
+        hideAlert(alertContainer);
+        if (!tokenRevealed) {
+          // Generate a dummy secure hash token
+          const dummyToken = 'sess_tok_' + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+          showAlert(alertContainer, `Access Token: <code>${dummyToken}</code>`, 'success');
+          revealBtn.textContent = 'Hide Secure Key';
+          tokenRevealed = true;
+        } else {
+          hideAlert(alertContainer);
+          revealBtn.textContent = 'Reveal Secure Key';
+          tokenRevealed = false;
+        }
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | Secure Auth System</title>
+  <meta name="description" content="Login to access the protected dashboard.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="auth-container">
+    <div class="auth-header">
+      <h1>Welcome Back</h1>
+      <p>Log in to access your dashboard</p>
+    </div>
+
+    <!-- Alert Container -->
+    <div id="alert-container" class="alert hidden"></div>
+
+    <form id="login-form" class="auth-form" novalidate>
+      
+      <!-- Username/Email Input -->
+      <div class="input-group">
+        <label for="username">Username or Email</label>
+        <div class="input-wrapper">
+          <input 
+            type="text" 
+            id="username" 
+            placeholder="e.g. alex@example.com" 
+            required
+            autocomplete="username"
+          >
+        </div>
+      </div>
+
+      <!-- Password Input -->
+      <div class="input-group">
+        <label for="password">Password</label>
+        <div class="input-wrapper">
+          <input 
+            type="password" 
+            id="password" 
+            placeholder="••••••••" 
+            required
+            autocomplete="current-password"
+          >
+          <button type="button" id="password-toggle" class="password-toggle" aria-label="Toggle password visibility">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Login Submit Button -->
+      <button type="submit" id="login-btn" class="btn btn-primary">
+        <span id="btn-text">Log In</span>
+        <span id="btn-loader" class="spinner hidden"></span>
+      </button>
+
+    </form>
+
+    <div class="auth-footer">
+      Don't have an account? <a href="register.html">Register</a>
+    </div>
+  </div>
+
+  <script src="auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('login-form');
+      const usernameInput = document.getElementById('username');
+      const passwordInput = document.getElementById('password');
+      const loginBtn = document.getElementById('login-btn');
+      const btnText = document.getElementById('btn-text');
+      const btnLoader = document.getElementById('btn-loader');
+      const alertContainer = document.getElementById('alert-container');
+
+      // Setup password toggle
+      setupPasswordToggle('password', 'password-toggle');
+
+      // Check URL parameters for status/error alerts
+      const urlParams = new URLSearchParams(window.location.search);
+      const registered = urlParams.get('registered');
+      const status = urlParams.get('status');
+      const error = urlParams.get('error');
+
+      if (registered === 'success') {
+        showAlert(alertContainer, 'Account created! Please log in with your credentials.', 'success');
+      } else if (status === 'logged_out') {
+        showAlert(alertContainer, 'You have been logged out successfully.', 'success');
+      } else if (error === 'session_expired') {
+        showAlert(alertContainer, 'Please log in to access the protected page.', 'error');
+      }
+
+      // Handle form submission
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        hideAlert(alertContainer);
+
+        const usernameVal = usernameInput.value.trim();
+        const passwordVal = passwordInput.value;
+
+        // 1. Basic form validation
+        if (!usernameVal) {
+          showAlert(alertContainer, 'Please enter your username or email.');
+          usernameInput.focus();
+          return;
+        }
+
+        if (!passwordVal) {
+          showAlert(alertContainer, 'Please enter your password.');
+          passwordInput.focus();
+          return;
+        }
+
+        // 2. Authentication check
+        try {
+          // Disable button and show spinner
+          loginBtn.disabled = true;
+          btnText.textContent = 'Verifying...';
+          btnLoader.classList.remove('hidden');
+
+          // Simulate slight delay for professional feedback look
+          await new Promise(resolve => setTimeout(resolve, 800));
+
+          await loginUser(usernameVal, passwordVal);
+
+          // Success indicator and redirect
+          showAlert(alertContainer, 'Login successful! Entering dashboard...', 'success');
+          
+          setTimeout(() => {
+            window.location.href = 'dashboard.html';
+          }, 1000);
+
+        } catch (error) {
+          showAlert(alertContainer, error.message);
+          
+          // Reset password field to force re-entry
+          passwordInput.value = '';
+          passwordInput.focus();
+
+          // Restore button
+          loginBtn.disabled = false;
+          btnText.textContent = 'Log In';
+          btnLoader.classList.add('hidden');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

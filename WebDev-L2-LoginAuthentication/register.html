@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Account | Secure Auth System</title>
+  <meta name="description" content="Register an account for the secure client-side authentication system.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="auth-container">
+    <div class="auth-header">
+      <h1>Join Us</h1>
+      <p>Create your account in seconds</p>
+    </div>
+
+    <!-- Alert Container -->
+    <div id="alert-container" class="alert hidden"></div>
+
+    <form id="register-form" class="auth-form" novalidate>
+      
+      <!-- Username/Email Input -->
+      <div class="input-group">
+        <label for="username">Username or Email</label>
+        <div class="input-wrapper">
+          <input 
+            type="text" 
+            id="username" 
+            placeholder="e.g. alex@example.com" 
+            required
+            autocomplete="username"
+          >
+        </div>
+      </div>
+
+      <!-- Password Input -->
+      <div class="input-group">
+        <label for="password">Password</label>
+        <div class="input-wrapper">
+          <input 
+            type="password" 
+            id="password" 
+            placeholder="••••••••" 
+            required
+            autocomplete="new-password"
+          >
+          <button type="button" id="password-toggle" class="password-toggle" aria-label="Toggle password visibility">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Password Validation Checklist -->
+      <div class="password-requirements">
+        <div id="req-length" class="requirement invalid">
+          <svg viewBox="0 0 24 24">
+            <path d="M5 13l4 4L19 7" />
+          </svg>
+          <span>At least 8 characters</span>
+        </div>
+        <div id="req-number" class="requirement invalid">
+          <svg viewBox="0 0 24 24">
+            <path d="M5 13l4 4L19 7" />
+          </svg>
+          <span>At least 1 number</span>
+        </div>
+      </div>
+
+      <!-- Confirm Password Input -->
+      <div class="input-group">
+        <label for="confirm-password">Confirm Password</label>
+        <div class="input-wrapper">
+          <input 
+            type="password" 
+            id="confirm-password" 
+            placeholder="••••••••" 
+            required
+            autocomplete="new-password"
+          >
+          <button type="button" id="confirm-password-toggle" class="password-toggle" aria-label="Toggle password visibility">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Register Submit Button -->
+      <button type="submit" id="register-btn" class="btn btn-primary">
+        <span id="btn-text">Register</span>
+        <span id="btn-loader" class="spinner hidden"></span>
+      </button>
+
+    </form>
+
+    <div class="auth-footer">
+      Already have an account? <a href="index.html">Log In</a>
+    </div>
+  </div>
+
+  <script src="auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('register-form');
+      const usernameInput = document.getElementById('username');
+      const passwordInput = document.getElementById('password');
+      const confirmPasswordInput = document.getElementById('confirm-password');
+      const registerBtn = document.getElementById('register-btn');
+      const btnText = document.getElementById('btn-text');
+      const btnLoader = document.getElementById('btn-loader');
+      const alertContainer = document.getElementById('alert-container');
+
+      // Requirement indicators
+      const reqLength = document.getElementById('req-length');
+      const reqNumber = document.getElementById('req-number');
+
+      // Setup password toggles
+      setupPasswordToggle('password', 'password-toggle');
+      setupPasswordToggle('confirm-password', 'confirm-password-toggle');
+
+      // Helper to dynamically check password requirements as user types
+      function checkRequirements() {
+        const value = passwordInput.value;
+        const checks = validatePassword(value);
+
+        if (checks.minLength) {
+          reqLength.classList.remove('invalid');
+          reqLength.classList.add('valid');
+        } else {
+          reqLength.classList.remove('valid');
+          reqLength.classList.add('invalid');
+        }
+
+        if (checks.hasNumber) {
+          reqNumber.classList.remove('invalid');
+          reqNumber.classList.add('valid');
+        } else {
+          reqNumber.classList.remove('valid');
+          reqNumber.classList.add('invalid');
+        }
+
+        return checks.minLength && checks.hasNumber;
+      }
+
+      passwordInput.addEventListener('input', checkRequirements);
+
+      // Handle form submission
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        hideAlert(alertContainer);
+
+        const usernameVal = usernameInput.value.trim();
+        const passwordVal = passwordInput.value;
+        const confirmPasswordVal = confirmPasswordInput.value;
+
+        // 1. Basic empty validations
+        if (!usernameVal) {
+          showAlert(alertContainer, 'Please enter a username or email.');
+          usernameInput.focus();
+          return;
+        }
+
+        if (!passwordVal) {
+          showAlert(alertContainer, 'Please enter a password.');
+          passwordInput.focus();
+          return;
+        }
+
+        // 2. Validate password rules
+        const isPasswordValid = checkRequirements();
+        if (!isPasswordValid) {
+          showAlert(alertContainer, 'Please meet all password requirements before registering.');
+          passwordInput.focus();
+          return;
+        }
+
+        // 3. Confirm match
+        if (passwordVal !== confirmPasswordVal) {
+          showAlert(alertContainer, 'Passwords do not match.');
+          confirmPasswordInput.focus();
+          return;
+        }
+
+        // 4. Register process with loaders
+        try {
+          // Disable button & show spinner
+          registerBtn.disabled = true;
+          btnText.textContent = 'Registering...';
+          btnLoader.classList.remove('hidden');
+
+          // Simulate slight delay for professional feedback look
+          await new Promise(resolve => setTimeout(resolve, 800));
+
+          await registerUser(usernameVal, passwordVal);
+
+          // Success alert
+          showAlert(alertContainer, 'Registration successful! Redirecting to login...', 'success');
+          
+          // Clear inputs
+          form.reset();
+          checkRequirements();
+
+          // Redirect to login page after 1.5s
+          setTimeout(() => {
+            window.location.href = 'index.html?registered=success';
+          }, 1500);
+
+        } catch (error) {
+          showAlert(alertContainer, error.message);
+          // Restore button
+          registerBtn.disabled = false;
+          btnText.textContent = 'Register';
+          btnLoader.classList.add('hidden');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
