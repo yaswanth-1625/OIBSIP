@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="FocusFlow - A premium, interactive To-Do Web App with glassmorphic design, smooth animations, timestamps, and localStorage persistence.">
+  
+  <!-- Title Tag -->
+  <title>FocusFlow · Premium To-Do Web App</title>
+  
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Main Container -->
+  <main class="app-container" id="app-container">
+    
+    <!-- Application Header -->
+    <header class="app-header">
+      <div class="app-title-wrapper">
+        <!-- Brand Logo -->
+        <svg class="app-logo-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="3" y="3" width="18" height="18" rx="5" stroke="url(#logo-grad)" stroke-width="2.5" />
+          <path d="M9 12l2 2 4-4" stroke="url(#logo-grad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+          <defs>
+            <linearGradient id="logo-grad" x1="3" y1="3" x2="21" y2="21" gradientUnits="userSpaceOnUse">
+              <stop stop-color="hsl(263, 85%, 63%)" />
+              <stop offset="1" stop-color="hsl(263, 95% , 72%)" />
+            </linearGradient>
+          </defs>
+        </svg>
+        <h1 class="app-title">FocusFlow</h1>
+      </div>
+      <p class="app-subtitle">Organize your daily tasks beautifully and stay productive</p>
+    </header>
+
+    <!-- Task Input Section -->
+    <section class="app-input-section">
+      <form id="task-form" class="input-group">
+        <input 
+          type="text" 
+          id="task-input" 
+          class="input-field" 
+          placeholder="What needs to be done today?" 
+          autocomplete="off"
+          required
+        >
+        <button type="submit" id="btn-add-task" class="btn-add" aria-label="Add new task">
+          <!-- Plus Icon -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          Add Task
+        </button>
+      </form>
+    </section>
+
+    <!-- App Dashboard with Lists -->
+    <section class="app-dashboard">
+      
+      <!-- Pending Tasks Column -->
+      <article class="column">
+        <header class="column-header">
+          <div class="column-title pending-title">
+            <span class="dot"></span>
+            <h2>Pending Tasks</h2>
+          </div>
+          <span id="pending-count" class="task-count">0 pending</span>
+        </header>
+        <ul id="pending-list" class="tasks-list">
+          <!-- Pending tasks will be inserted dynamically here -->
+        </ul>
+      </article>
+
+      <!-- Completed Tasks Column -->
+      <article class="column">
+        <header class="column-header">
+          <div class="column-title completed-title">
+            <span class="dot"></span>
+            <h2>Completed Tasks</h2>
+          </div>
+          <span id="completed-count" class="task-count">0 completed</span>
+        </header>
+        <ul id="completed-list" class="tasks-list">
+          <!-- Completed tasks will be inserted dynamically here -->
+        </ul>
+      </article>
+
+    </section>
+
+  </main>
+
+  <!-- Application Logic -->
+  <script src="app.js" defer></script>
+</body>
+</html>
