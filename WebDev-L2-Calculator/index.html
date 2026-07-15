@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Quantum Calc - A premium, high-fidelity browser-based calculation interface with responsive glassmorphism design, operator chaining, and complete keyboard integration.">
+    <title>Quantum Calc - Precision calculation meets glassmorphic design</title>
+    <!-- Google Fonts: Outfit for general text, Share Tech Mono for the digital display screen -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Background Ambient Glows -->
+    <div class="background-decorations">
+        <div class="circle circle-1"></div>
+        <div class="circle circle-2"></div>
+        <div class="circle circle-3"></div>
+    </div>
+    
+    <!-- Navigation Bar -->
+    <header class="navbar">
+        <div class="logo">
+            <i class="fa-solid fa-calculator logo-icon"></i>
+            <span>QUANTUM_CALC</span>
+        </div>
+        <nav class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#features">Features</a>
+            <a href="#calculator-demo">Calculator</a>
+        </nav>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="landing-container">
+        
+        <!-- Hero Section -->
+        <section id="home" class="hero-section">
+            <div class="hero-content">
+                <span class="hero-badge"><i class="fa-solid fa-bolt"></i> Now with Keyboard Binding</span>
+                <h1 class="hero-title">Precision computation.<br><span class="gradient-text">Beautifully designed.</span></h1>
+                <p class="hero-description">
+                    Quantum Calc merges high-fidelity arithmetic processing with modern glassmorphism. Engineered with responsive grids, hardware-level keypress listening, and seamless operator chaining.
+                </p>
+                <div class="hero-actions">
+                    <a href="#calculator-demo" class="btn-cta btn-primary">Launch Demo</a>
+                    <a href="#features" class="btn-cta btn-secondary">Learn More</a>
+                </div>
+            </div>
+            
+            <div class="hero-visual">
+                <div class="visual-mockup-wrapper">
+                    <div class="floating-badge badge-1">
+                        <i class="fa-solid fa-microchip"></i>
+                        <span>ES6 Core</span>
+                    </div>
+                    <div class="floating-badge badge-2">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span>Grid Align</span>
+                    </div>
+                    <!-- Preview Graphic of Calculator screen state -->
+                    <div class="mockup-display">
+                        <div class="mockup-history">12 × 5 + 40</div>
+                        <div class="mockup-main">100</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="features-section">
+            <div class="section-header">
+                <span class="section-subtitle">Core Mechanics</span>
+                <h2 class="section-title">Engineered for Seamless Performance</h2>
+                <div class="divider"></div>
+            </div>
+            
+            <div class="features-grid">
+                <!-- Feature 1 -->
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper op-glow">
+                        <i class="fa-solid fa-cubes"></i>
+                    </div>
+                    <h3 class="feature-card-title">Glassmorphic UI</h3>
+                    <p class="feature-card-text">
+                        A beautiful interface with backdrop blurs, subtle highlights, glowing borders, and reactive button clicks.
+                    </p>
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper chain-glow">
+                        <i class="fa-solid fa-link"></i>
+                    </div>
+                    <h3 class="feature-card-title">Operator Chaining</h3>
+                    <p class="feature-card-text">
+                        Perform continuous arithmetic calculations seamlessly without needing a full system reset between calculations.
+                    </p>
+                </div>
+                
+                <!-- Feature 3 -->
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper math-glow">
+                        <i class="fa-solid fa-percent"></i>
+                    </div>
+                    <h3 class="feature-card-title">Numeric Precision</h3>
+                    <p class="feature-card-text">
+                        Custom algorithms clean floating-point representation to eliminate typical binary inaccuracies like 0.1 + 0.2.
+                    </p>
+                </div>
+                
+                <!-- Feature 4 -->
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper kb-glow">
+                        <i class="fa-solid fa-keyboard"></i>
+                    </div>
+                    <h3 class="feature-card-title">Hardware Bindings</h3>
+                    <p class="feature-card-text">
+                        Complete physical keyboard support allows high-speed numeric input, deletes, execution, and clear binds.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Calculator Demo Section -->
+        <section id="calculator-demo" class="calculator-demo-section">
+            <div class="demo-grid-layout">
+                <div class="demo-info">
+                    <span class="section-subtitle">Live Application</span>
+                    <h2 class="demo-title">Interact with the Quantum Engine</h2>
+                    <p class="demo-description">
+                        Try the application right now. Tap the buttons or type directly from your keyboard. Your keystrokes are animated on the interface below.
+                    </p>
+                    <ul class="spec-list">
+                        <li><i class="fa-solid fa-square-check"></i> CSS Grid layout for key alignment</li>
+                        <li><i class="fa-solid fa-square-check"></i> Active input protection against division by zero</li>
+                        <li><i class="fa-solid fa-square-check"></i> Standard mathematical precedence & evaluation</li>
+                    </ul>
+                </div>
+                
+                <!-- Interactive Calculator Widget -->
+                <div class="demo-app-container">
+                    <div class="calculator-container" id="calculator">
+                        <!-- Glassmorphic Screen Display -->
+                        <div class="calculator-screen">
+                            <div class="display-history" id="display-history" aria-live="polite"></div>
+                            <div class="display-main" id="display-main" aria-live="polite">0</div>
+                        </div>
+                        
+                        <!-- Grid Layout of Calculator Keys -->
+                        <div class="calculator-keys">
+                            <!-- Row 1 -->
+                            <button type="button" class="btn btn-action btn-clear" data-action="clear" id="key-clear" aria-label="Clear All">C</button>
+                            <button type="button" class="btn btn-action btn-backspace" data-action="backspace" id="key-backspace" aria-label="Backspace">
+                                <i class="fa-solid fa-delete-left"></i>
+                            </button>
+                            <button type="button" class="btn btn-action btn-percent" data-action="percent" id="key-percent" aria-label="Percentage">%</button>
+                            <button type="button" class="btn btn-operator" data-operator="/" id="key-divide" aria-label="Divide">÷</button>
+                            
+                            <!-- Row 2 -->
+                            <button type="button" class="btn btn-num" data-number="7" id="key-7">7</button>
+                            <button type="button" class="btn btn-num" data-number="8" id="key-8">8</button>
+                            <button type="button" class="btn btn-num" data-number="9" id="key-9">9</button>
+                            <button type="button" class="btn btn-operator" data-operator="*" id="key-multiply" aria-label="Multiply">×</button>
+                            
+                            <!-- Row 3 -->
+                            <button type="button" class="btn btn-num" data-number="4" id="key-4">4</button>
+                            <button type="button" class="btn btn-num" data-number="5" id="key-5">5</button>
+                            <button type="button" class="btn btn-num" data-number="6" id="key-6">6</button>
+                            <button type="button" class="btn btn-operator" data-operator="-" id="key-subtract" aria-label="Subtract">−</button>
+                            
+                            <!-- Row 4 -->
+                            <button type="button" class="btn btn-num" data-number="1" id="key-1">1</button>
+                            <button type="button" class="btn btn-num" data-number="2" id="key-2">2</button>
+                            <button type="button" class="btn btn-num" data-number="3" id="key-3">3</button>
+                            <button type="button" class="btn btn-operator" data-operator="+" id="key-add" aria-label="Add">+</button>
+                            
+                            <!-- Row 5 -->
+                            <button type="button" class="btn btn-num" data-number="0" id="key-0">0</button>
+                            <button type="button" class="btn btn-num" data-number="." id="key-decimal">.</button>
+                            <button type="button" class="btn btn-equals" data-action="equals" id="key-equals" aria-label="Equals">=</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="landing-footer">
+        <p>© 2026 Quantum Calc. Created with modern web tech. Use keyboard shortcuts: <kbd>Esc</kbd> for Clear, <kbd>Backspace</kbd> for Delete, <kbd>Enter</kbd> for Equals.</p>
+    </footer>
+
+    <!-- App Script -->
+    <script src="script.js"></script>
+</body>
+</html>
